@@ -1,1 +1,69 @@
-<!DOCTYPE html> <html> <head> <meta charset="UTF-8"> <title>Dino Game</title> <style> body { background: #f7f7f7; overflow: hidden; font-family: Arial; } #game { width: 800px; height: 200px; background: white; border: 2px solid black; margin: 40px auto; position: relative; overflow: hidden; } #dino { width: 40px; height: 40px; background: black; position: absolute; bottom: 0; left: 50px; } #cactus { width: 20px; height: 50px; background: green; position: absolute; bottom: 0; right: -20px; } #score { text-align: center; font-size: 24px; margin-top: 10px; } </style> </head> <body> <div id="score">Score: 0</div> <div id="game"> <div id="dino"></div> <div id="cactus"></div> </div> <script> const dino = document.getElementById("dino"); const cactus = document.getElementById("cactus"); const scoreText = document.getElementById("score"); let isJumping = false; let score = 0; let speed = 5; function jump() { if (isJumping) return; isJumping = true; let upInterval = setInterval(() => { let dinoTop = parseInt(window.getComputedStyle(dino).bottom); if (dinoTop >= 120) { clearInterval(upInterval); let downInterval = setInterval(() => { dinoTop = parseInt(window.getComputedStyle(dino).bottom); if (dinoTop <= 0) { clearInterval(downInterval); isJumping = false; } else { dino.style.bottom = dinoTop - 5 + "px"; } }, 20); } else { dino.style.bottom = dinoTop + 5 + "px"; } }, 20); } document.addEventListener("keydown", jump); function moveCactus() { let cactusLeft = parseInt(window.getComputedStyle(cactus).right); if (cactusLeft >= 820) { cactus.style.right = "-20px"; score++; speed += 0.2; scoreText.textContent = "Score: " + score; } else { cactus.style.right = cactusLeft + speed + "px"; } let dinoBottom = parseInt(window.getComputedStyle(dino).bottom); let cactusPos = cactus.getBoundingClientRect(); let dinoPos = dino.getBoundingClientRect(); if ( dinoPos.right > cactusPos.left && dinoPos.left < cactusPos.right && dinoBottom < 50 ) { alert("Game Over! Final Score: " + score); location.reload(); } requestAnimationFrame(moveCactus); } moveCactus(); </script> </body> </html>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Dino Game</title>
+  <style>
+    body {
+      background: #f7f7f7;
+      font-family: Arial, sans-serif;
+    }
+    #game {
+      width: 800px;
+      height: 200px;
+      background: #ffffff;
+      border: 2px solid #000000;
+      margin: 40px auto;
+      position: relative;
+      overflow: hidden;
+    }
+    #dino {
+      width: 40px;
+      height: 40px;
+      background: #000000;
+      position: absolute;
+      bottom: 0;
+      left: 50px;
+    }
+    #cactus {
+      width: 20px;
+      height: 50px;
+      background: #008000;
+      position: absolute;
+      bottom: 0;
+      left: 800px;
+    }
+    #score {
+      text-align: center;
+      font-size: 24px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div id="score">Score: 0</div>
+<div id="game">
+  <div id="dino"></div>
+  <div id="cactus"></div>
+</div>
+
+<script>
+  const dino = document.getElementById("dino");
+  const cactus = document.getElementById("cactus");
+  const scoreText = document.getElementById("score");
+
+  let isJumping = false;
+  let score = 0;
+  let speed = 6;
+
+  function jump() {
+    if (isJumping) return;
+    isJumping = true;
+
+    let position = 0;
+    const upInterval = setInterval(() => {
+      if (position >= 120) {
+        clearInterval(upInterval);
+        const downInterval = setInterval(() => {
+          if (position
